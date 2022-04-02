@@ -1,0 +1,31 @@
+version: "1.0"
+services:
+  app:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: flair_onboarding
+    container_name: flair_onboarding
+    restart: unless-stopped
+    working_dir: /var/www/
+    command: 'php artisan serve --port=8081'
+    volumes:
+      - ./:/var/www
+    ports:
+      - 80:80
+
+  nginx:
+    image: nginx:alpine
+    container_name: flair_onboarding-nginx
+    restart: unless-stopped
+    ports:
+      - 8081:8082
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - flair_onboarding
+
