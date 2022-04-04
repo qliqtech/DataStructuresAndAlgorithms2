@@ -213,7 +213,7 @@ class SyncAccountsController extends Controller
 
       //  dd($request->user());
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin || $request->user()->userroleid == UserRoles::NSSAdministrator) {
+        if($request->user()->userroleid == UserRoles::FlairAdmin || $request->user()->userroleid == UserRoles::NSSAdministrator) {
 
 
 
@@ -286,6 +286,7 @@ class SyncAccountsController extends Controller
                 ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'company details',
                 'details' => $companyservice->listcompaniesfornssapproval($request->rowsperpage,$request->page,$request->search,$request->order));
 
+
         }else{
 
             $responsemessage = array('responsecode'=>401,
@@ -331,7 +332,7 @@ class SyncAccountsController extends Controller
         }
 
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin) {
+        if($request->user()->userroleid == UserRoles::FlairAdmin) {
 
 
             // $datafromrequest = $this->GetUserAgent($request);
@@ -482,7 +483,7 @@ class SyncAccountsController extends Controller
 
         }
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin){
+        if($request->user()->userroleid == UserRoles::FlairAdmin){
 
             $companyservice->flairapproveorrejectcompanyrequest($datafromrequest);
 

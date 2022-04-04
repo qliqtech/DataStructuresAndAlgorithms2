@@ -787,7 +787,7 @@ class CompanyService extends BaseImplemetationService
 
             $next = null;
 
-            if($currentuser->userroleid == UserRoles::SuperAdmin){
+            if($currentuser->userroleid == UserRoles::FlairAdmin){
 
                 $previous = Company::where('id', '<', $params["companyid"])->where('flairrequeststatus',CompanyApprovalRequestEnumns::Pending)->max('id');
 
@@ -839,7 +839,7 @@ class CompanyService extends BaseImplemetationService
 
           //  dd($currentuser->userroleid);
 
-            if($currentuser->userroleid == UserRoles::SuperAdmin){
+            if($currentuser->userroleid == UserRoles::FlairAdmin){
 
                 $userhascompany = $userdboperations->find($companydetails->created_by);
 

@@ -363,7 +363,7 @@ class AuthenticationService extends BaseImplemetationService
 
 
 
-            $params['userroleid'] = UserRoles::SuperAdmin;
+            $params['userroleid'] = UserRoles::FlairAdmin;
 
 
             $params['useraccountstatus'] = "pending";
@@ -619,7 +619,7 @@ class AuthenticationService extends BaseImplemetationService
             $params['activityname'] = "Invite Revoke";
 
 
-            $params['userroleid'] = UserRoles::SuperAdmin;
+            $params['userroleid'] = UserRoles::FlairAdmin;
 
 
             $params['useraccountstatus'] = "pending";
@@ -1212,17 +1212,15 @@ class AuthenticationService extends BaseImplemetationService
         $companyservice = new CompanyService();
 
 
-        $userdetais = $userdbops->find($userid);
+        $userdetais = DB::table('users')->select(['id','fullname','email','userroleid','onboardingcompanystate','useraccountstatus','front_portrait_url','employerid'])->find($userid);
 
-
+       // dd($userdetais);
 
         $userroledetails = DB::table('userroles')->find($userdetais->userroleid);
 
         //  dd($userroledetails);
 
         if($userdetais->userroleid == UserRoles::CompanyAdmin || $userdetais->userroleid == UserRoles::CompanyRep){
-
-
 
 
             $companydetail = $companydbops->find($userdetais->employerid);
@@ -1232,11 +1230,7 @@ class AuthenticationService extends BaseImplemetationService
                 $empty = (object)NULL;
 
 
-                return array('userdetails'=>array('email'=>$userdetais->email,
-                    'fullname'=>$userdetais->fullname,
-                    'onboardingcompanystate'=>$userdetais->onboardingcompanystate,
-
-                ),
+                return array('userdetails'=>$userdetais,
                     'userrole'=>$userroledetails,
                     'companydetails'=>  $empty);
 
@@ -1264,11 +1258,7 @@ class AuthenticationService extends BaseImplemetationService
 
             //    dd($companyinfofromcache);
 
-            return array('userdetails'=>array('email'=>$userdetais->email,
-                'fullname'=>$userdetais->fullname,
-                'onboardingcompanystate'=>$userdetais->onboardingcompanystate,
-
-            ),
+            return array('userdetails'=>$userdetais,
                 'userrole'=>$userroledetails,
                 'companydetails'=>  $companyinfofromcache
 
@@ -1279,9 +1269,7 @@ class AuthenticationService extends BaseImplemetationService
 
             //   dd($userroledetails);
 
-            return array('userdetails'=>array('email'=>$userdetais->email,
-                'fullname'=>$userdetais->fullname),
-                'front_portrait_url'=>$userdetais->front_portrait_url,
+            return array('userdetails'=>$userdetais,
                 'userrole'=>$userroledetails,
 
             );
@@ -1294,8 +1282,7 @@ class AuthenticationService extends BaseImplemetationService
 
             //   dd($userroledetails);
 
-        return array('userdetails'=>array('email'=>$userdetais->email,
-            'fullname'=>$userdetais->fullname),
+        return array('userdetails'=>$userdetais,
             'userrole'=>$userroledetails,
 
         );

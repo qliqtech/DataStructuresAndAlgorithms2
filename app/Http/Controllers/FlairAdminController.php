@@ -8,18 +8,21 @@ use App\Enums\UserRoles;
 use App\Helper\GenerateRandomCharactersHelper;
 use App\ImplementationService\AuthenticationService;
 use App\ImplementationService\UserService;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CompanyAdminController extends Controller
+
+class FlairAdminController extends Controller
 {
 
 
 
 
 
-    public function listcompanyreps (Request $request) {
+
+
+
+    public function listflairadmins (Request $request) {
 
         if($request->user()->userroleid!=UserRoles::FlairAdmin){
 
@@ -35,14 +38,16 @@ class CompanyAdminController extends Controller
 
 
         return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
-            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'Company Admins List',
-            'details' => $usermanagementservice->listcompanyreps($request->rowsperpage,$request->page,$request->search,$request->order));
+            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'Flair Admins List',
+            'details' => $usermanagementservice->listflairadmins($request->rowsperpage,$request->page,$request->search,$request->order));
 
 
 
 
 
     }
+
+
 
 
 }

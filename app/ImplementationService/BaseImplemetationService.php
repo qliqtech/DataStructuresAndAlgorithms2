@@ -11,20 +11,15 @@ class BaseImplemetationService extends Controller
     public function responseHelper($response): array {
 
 
-        if($response == null){
 
-            return array([InAppResponsTypes::responsetypekey=>InAppResponsTypes::Error]);
-        }
-        if(!array_key_exists(InAppResponsTypes::responsetypekey, $response)){
 
-            return array(InAppResponsTypes::responsetypekey =>InAppResponsTypes::ValidationError);
-
-        }
 
         $auditparams = $response["AuditItems"];
 
 
       //  dd($auditparams);
+
+
 
         $this::LogAudit($auditparams);
 

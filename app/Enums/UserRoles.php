@@ -4,7 +4,7 @@ namespace App\Enums;
 
 abstract class UserRoles
 {
-    const SuperAdmin = 1;
+    const FlairAdmin = 1;
 
     const NSSAdministrator = 2;
 
