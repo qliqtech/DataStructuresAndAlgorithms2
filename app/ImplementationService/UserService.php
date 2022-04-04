@@ -53,8 +53,12 @@ class UserService  extends BaseImplemetationService
                         'email',
 
                     )
-                    ->orWhere('fullname','LIKE','%' . $search. '%')
+                    ->Where('fullname','LIKE','%' . $search. '%')
                     ->Where('userroleid','=',UserRoles::FlairAdmin)
+                    ->Where('IsDeleted','=',null)
+
+
+
                     ->orderBy("id",$orderby)
                     ->paginate($rowsperpage,['*'],'page',$currentpage);
 
@@ -152,6 +156,7 @@ class UserService  extends BaseImplemetationService
                 )
                 ->orWhere('fullname','LIKE','%' . $search. '%')
                 ->Where('userroleid','=',UserRoles::NSSAdministrator)
+                ->Where('IsDeleted','=',null)
 
 
                 ->orderBy("id",$orderby)
@@ -350,6 +355,7 @@ class UserService  extends BaseImplemetationService
 
                 )->where('fullname','LIKE','%' . $search. '%')
                 ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
+                ->Where('users.IsDeleted','=',null)
 
                 ->orderBy("userid",$orderby)
                 ->paginate($rowsperpage,['*'],'page',$currentpage);
@@ -455,6 +461,7 @@ class UserService  extends BaseImplemetationService
                 )->where('fullname','LIKE','%' . $search. '%')
                 ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
                 ->where('employerid','=',$companyid)
+                ->Where('users.IsDeleted','=',null)
 
                 ->orderBy("userid",$orderby)
                 ->paginate($rowsperpage,['*'],'page',$currentpage);

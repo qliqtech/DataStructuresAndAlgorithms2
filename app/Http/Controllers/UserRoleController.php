@@ -275,5 +275,21 @@ class UserRoleController extends Controller
 
     }
 
+    public function permissioncategorylist(Request $request)
+    {
+
+
+        if ($request->user()->userroleid == UserRoles::FlairAdmin) {
+
+
+            $permissioncategory = DB::table('permissions')->select(['category', 'categoryslug'])->groupBy('categoryslug')->get();
+
+            return $permissioncategory;
+        }
+
+        return response(array('responsemessage'=>'Unauthorized access'),401);
+
+    }
+
 
 }
