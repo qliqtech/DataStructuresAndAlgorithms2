@@ -45,7 +45,7 @@ class CompanyAdminController extends Controller
 
 
             return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
-                ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'Company Admins List',
+                ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'My Company Admins List',
                 'details' => $usermanagementservice->listmycompanyreps($request->rowsperpage,$request->page,$request->search,$request->order,$request->user()->employerid));
 
 

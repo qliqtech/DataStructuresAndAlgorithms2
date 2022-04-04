@@ -54,6 +54,10 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     Route::get('/userrole/list_user_roles','UserRoleController@listuserroles')->middleware('auth:api');//->middleware('api.superAdmin');
 
+    Route::post('/userrole/deactivate_user_role','UserRoleController@deactivateuserrole')->middleware('auth:api');//->middleware('api.superAdmin');
+
+    Route::post('/userrole/activate_user_role','UserRoleController@activateuserrole')->middleware('auth:api');//->middleware('api.superAdmin');
+
 
 
 });

@@ -187,5 +187,93 @@ class UserRoleController extends Controller
     }
 
 
+    public function deactivateuserrole(Request $request){
+
+        if($request->userroleid == null){
+
+
+            return response(array('responsemessage'=>'userroleid is required'),401);
+
+        }
+
+
+        if($request->user()->userroleid == UserRoles::FlairAdmin){
+
+
+            $userroleid = $request->userroleid;
+
+            $userroledetails = Userrole::find($userroleid);
+
+            if($userroledetails == null){
+
+
+                return response(array('responsemessage'=>'User role does not exist'),404);
+            }
+
+            if($userroledetails->is_system_generated == true){
+
+
+                return response(array('responsemessage'=>'User role cannot be disabled. System Generated'),401);
+
+            }
+
+
+            $userroledetails->status = "inactive";
+
+            $userroledetails->save();
+
+            return response(array('responsemessage'=>'User role Deactivated'),200);
+
+        }
+
+
+
+    }
+
+
+
+    public function activateuserrole(Request $request){
+
+        if($request->userroleid == null){
+
+
+            return response(array('responsemessage'=>'userroleid is required'),401);
+
+        }
+
+
+        if($request->user()->userroleid == UserRoles::FlairAdmin){
+
+
+            $userroleid = $request->userroleid;
+
+            $userroledetails = Userrole::find($userroleid);
+
+            if($userroledetails == null){
+
+
+                return response(array('responsemessage'=>'User role does not exist'),404);
+            }
+
+            if($userroledetails->is_system_generated == true){
+
+
+                return response(array('responsemessage'=>'User role cannot be enabled. System Generated'),401);
+
+            }
+
+
+            $userroledetails->status = "active";
+
+            $userroledetails->save();
+
+            return response(array('responsemessage'=>'User role Activated'),200);
+
+        }
+
+
+
+    }
+
 
 }
