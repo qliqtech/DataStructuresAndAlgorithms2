@@ -334,11 +334,13 @@ class UserService  extends BaseImplemetationService
 
             $users =  DB::table('users')
                 ->join('companies', 'users.employerid', '=', 'companies.id')
+                ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                 ->select('users.id AS userid', 'registeredcompanyname',
                     'companylogourl',
                     'jobrolename',
                     'fullname',
                     'email',
+                    'userrolename',
                     'phonenumber',
                     'useraccountstatus',
                     'regionname',
@@ -346,8 +348,9 @@ class UserService  extends BaseImplemetationService
                     DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
 
 
-                )->where('userroleid','=',UserRoles::CompanyAdmin)
-                ->orWhere('userroleid','=',UserRoles::CompanyRep)
+                )->where('fullname','LIKE','%' . $search. '%')
+                ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
+
                 ->orderBy("userid",$orderby)
                 ->paginate($rowsperpage,['*'],'page',$currentpage);
 
@@ -403,6 +406,114 @@ class UserService  extends BaseImplemetationService
 
         // return $companydetails;
     }
+
+
+
+
+    public function listmycompanyreps($rowsperpage, $currentpage, $search, $orderby,$companyid)
+    {
+
+
+
+        //   dd($orderby);
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+
+            $users =  DB::table('users')
+                ->join('companies', 'users.employerid', '=', 'companies.id')
+                ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                ->select('users.id AS userid', 'registeredcompanyname',
+                    'companylogourl',
+                    'jobrolename',
+                    'fullname',
+                    'email',
+                    'userrolename',
+                    'phonenumber',
+                    'useraccountstatus',
+                    'regionname',
+
+                    DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+
+
+                )->where('fullname','LIKE','%' . $search. '%')
+                ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
+                ->where('employerid','=',$companyid)
+
+                ->orderBy("userid",$orderby)
+                ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+
+
+            return $users->toArray();
+
+            //   }else{
+
+            //       $companies =  DB::table('companies')
+            //           ->join('users', 'users.employerid', '=', 'companies.id')
+            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
+            //          ->select('companies.id AS companyid', 'registeredcompanyname',
+            //             'companylogourl',
+            //             'jobrolename',
+            //             'fullname',
+            //             'regionname',
+            //            'statusname',
+            //             'statusname_flair'
+            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
+
+            //         ->orderBy("companyid",$orderby)
+            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+            //       return $companies->toArray();
+
+
+
+
+            //    }
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
 
 
     public function deactivateuser($params){
