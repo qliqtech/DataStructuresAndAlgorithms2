@@ -346,7 +346,7 @@ class UserService  extends BaseImplemetationService
                     'fullname',
                     'email',
                     'userrolename',
-                    'users.slug AS userroleslug',
+                    'userroles.slug AS userroleslug',
                     'users.userroleid',
                     'userroles.type AS user_role_type',
                     'phonenumber',
@@ -454,7 +454,7 @@ class UserService  extends BaseImplemetationService
                     'fullname',
                     'email',
                     'userrolename',
-                    'users.slug AS userroleslug',
+                    'userroles.slug AS userroleslug',
                     'users.userroleid',
                     'userroles.type AS user_role_type',
 
