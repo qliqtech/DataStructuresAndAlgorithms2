@@ -138,6 +138,8 @@ class UserRoleController extends Controller
     public function listpermissions(Request $request){
 
 
+
+
         if($request->user()->userroleid != UserRoles::FlairAdmin){
 
 
@@ -146,9 +148,20 @@ class UserRoleController extends Controller
         }
 
 
-        $dataforpermisions = Db::table('permissions')->get();
+        $dataforpermisions =  null ;//  Db::table('permissions')->get();
 
 
+        if($request->category == null){
+
+            $dataforpermisions =  Db::table('permissions')->get();
+
+
+        }else{
+
+            $dataforpermisions = Db::table('permissions')->where('categoryslug','=',$request->category)->get();
+
+
+        }
 
 
         return response(array('responsemessage'=>'User Permissions',
@@ -180,9 +193,6 @@ class UserRoleController extends Controller
         return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
             ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'User roles List',
             'details' => $usermanagementservice->listuserroles($request->rowsperpage,$request->page,$request->search,$request->order));
-
-
-
 
     }
 
