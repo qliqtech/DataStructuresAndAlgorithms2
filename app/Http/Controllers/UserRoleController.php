@@ -174,6 +174,12 @@ class UserRoleController extends Controller
 
     }
 
+    public function realmslist(Request $request){
+
+
+        return DB::table('realms')->get();
+
+    }
 
     public function listuserroles(Request $request){
 
@@ -185,6 +191,12 @@ class UserRoleController extends Controller
 
         }
 
+        if($request->realmid == null){
+
+
+            return response(array('responsemessage'=>'realmid is mandatory'),400);
+
+        }
 
 
         $usermanagementservice = new UserService();
@@ -195,6 +207,7 @@ class UserRoleController extends Controller
             'details' => $usermanagementservice->listuserroles($request->rowsperpage,$request->page,$request->search,$request->order,$request->realmid));
 
     }
+
 
 
     public function deactivateuserrole(Request $request){

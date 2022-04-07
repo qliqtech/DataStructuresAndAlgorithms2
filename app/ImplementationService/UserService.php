@@ -260,31 +260,7 @@ class UserService  extends BaseImplemetationService
 
             return $users->toArray();
 
-            //   }else{
 
-            //       $companies =  DB::table('companies')
-            //           ->join('users', 'users.employerid', '=', 'companies.id')
-            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
-            //          ->select('companies.id AS companyid', 'registeredcompanyname',
-            //             'companylogourl',
-            //             'jobrolename',
-            //             'fullname',
-            //             'regionname',
-            //            'statusname',
-            //             'statusname_flair'
-            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
-
-            //         ->orderBy("companyid",$orderby)
-            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
-
-
-
-            //       return $companies->toArray();
-
-
-
-
-            //    }
 
 
 
