@@ -51,7 +51,8 @@ class UserService  extends BaseImplemetationService
                         'useraccountstatus',
                         'front_portrait_url',
                         'email',
-                        'userrolename'
+                        'userrolename',
+                        'description AS userroledescription'
 
                     )->join('userroles','userroles.id','=','users.userroleid')
                     ->Where('fullname','LIKE','%' . $search. '%')
@@ -121,9 +122,6 @@ class UserService  extends BaseImplemetationService
     {
 
 
-
-        //   dd($orderby);
-
         if($rowsperpage == null){
 
             $rowsperpage = 15;
@@ -153,7 +151,9 @@ class UserService  extends BaseImplemetationService
                     'useraccountstatus',
                     'front_portrait_url',
                     'email',
-                    'userrolename'
+                    'userrolename',
+                    'description AS userroledescription'
+
                 )->join('userroles','userroles.id','=','users.userroleid')
                 ->orWhere('fullname','LIKE','%' . $search. '%')
                 ->Where('userroleid','=',UserRoles::NSSAdministrator)
