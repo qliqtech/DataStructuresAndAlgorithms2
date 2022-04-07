@@ -247,7 +247,7 @@ class UserService  extends BaseImplemetationService
                     'useraccountstatus',
                     'front_portrait_url',
                     'email',
-
+                    'phonenumber',
                     DB::raw('DATE_FORMAT(created_at, "%d %M, %Y") as created_at')
                 )
                 ->orWhere('fullname','LIKE','%' . $search. '%')
@@ -733,11 +733,11 @@ class UserService  extends BaseImplemetationService
 
 
 
-    public function listuserroles($rowsperpage, $currentpage, $search, $orderby)
+    public function listuserroles($rowsperpage, $currentpage, $search, $orderby, $realmid)
     {
 
 
-
+      //  $request->realmid
         //   dd($orderby);
 
         if($rowsperpage == null){
@@ -750,6 +750,10 @@ class UserService  extends BaseImplemetationService
             $currentpage = 1;
         }
 
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
         if($orderby == null){
 
             $orderby = "desc";
@@ -770,8 +774,9 @@ class UserService  extends BaseImplemetationService
                     'description',
                     DB::raw("count(users.id) as numberofusers")
                 )->leftJoin('users', 'users.userroleid', '=', 'userroles.id')
+                ->Where('realmid','=',  $realmid)
 
-                ->orWhere('userrolename','LIKE','%' . $search. '%')
+                ->Where('userrolename','LIKE','%' . $search. '%')
                 ->groupBy('userroles.id')
 
                 ->orderBy("userroles.id",$orderby)

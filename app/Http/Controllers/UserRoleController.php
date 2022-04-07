@@ -192,7 +192,7 @@ class UserRoleController extends Controller
 
         return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
             ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'User roles List',
-            'details' => $usermanagementservice->listuserroles($request->rowsperpage,$request->page,$request->search,$request->order));
+            'details' => $usermanagementservice->listuserroles($request->rowsperpage,$request->page,$request->search,$request->order,$request->realmid));
 
     }
 
