@@ -182,7 +182,7 @@ class UserRoleController extends Controller
     public function realmslist(Request $request){
 
 
-        return DB::table('realms')->get();
+        return DB::table('realms')->whereIn('id',[1,2,3])->get();
 
     }
 
