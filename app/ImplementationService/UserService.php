@@ -46,13 +46,14 @@ class UserService  extends BaseImplemetationService
          //   if($search == null){
 
                 $users =  DB::table('users')
-                    ->select('id',
+                    ->select('users.id AS id',
                         'fullname',
                         'useraccountstatus',
                         'front_portrait_url',
                         'email',
+                        'userrolename'
 
-                    )
+                    )->join('userroles','userroles.id','=','users.userroleid')
                     ->Where('fullname','LIKE','%' . $search. '%')
                     ->Where('userroleid','=',UserRoles::FlairAdmin)
                     ->Where('IsDeleted','=',null)
@@ -147,13 +148,13 @@ class UserService  extends BaseImplemetationService
             //   if($search == null){
 
             $users =  DB::table('users')
-                ->select('id',
+                ->select('users.id AS id',
                     'fullname',
                     'useraccountstatus',
                     'front_portrait_url',
                     'email',
-
-                )
+                    'userrolename'
+                )->join('userroles','userroles.id','=','users.userroleid')
                 ->orWhere('fullname','LIKE','%' . $search. '%')
                 ->Where('userroleid','=',UserRoles::NSSAdministrator)
                 ->Where('IsDeleted','=',null)
@@ -312,63 +313,69 @@ class UserService  extends BaseImplemetationService
 
         try {
 
-
-            $users =  DB::table('users')
-                ->join('companies', 'users.employerid', '=', 'companies.id')
-                ->join('userroles', 'users.userroleid', '=', 'userroles.id')
-                ->select('users.id AS userid', 'registeredcompanyname',
-                    'companylogourl',
-                    'jobrolename',
-                    'fullname',
-                    'email',
-                    'userrolename',
-                    'userroles.slug AS userroleslug',
-                    'users.userroleid',
-                    'userroles.type AS user_role_type',
-                    'phonenumber',
-                    'useraccountstatus',
-                    'regionname',
-
-                    DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+            if($search == null) {
 
 
-                )->where('fullname','LIKE','%' . $search. '%')
-                ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
-                ->Where('users.IsDeleted','=',null)
+                $users = DB::table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
 
-                ->orderBy("userid",$orderby)
-                ->paginate($rowsperpage,['*'],'page',$currentpage);
-
-
-
-
-            return $users->toArray();
-
-            //   }else{
-
-            //       $companies =  DB::table('companies')
-            //           ->join('users', 'users.employerid', '=', 'companies.id')
-            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
-            //          ->select('companies.id AS companyid', 'registeredcompanyname',
-            //             'companylogourl',
-            //             'jobrolename',
-            //             'fullname',
-            //             'regionname',
-            //            'statusname',
-            //             'statusname_flair'
-            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
-
-            //         ->orderBy("companyid",$orderby)
-            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
 
 
+                    )//->where('fullname','LIKE','%' . $search. '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                    ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
 
-            //       return $companies->toArray();
+
+                return $users->toArray();
+
+            }else{
 
 
+                $users = DB::table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
+
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
 
 
-            //    }
+                    )->where('fullname','LIKE','%' . $search. '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                    ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
+
+
+                return $users->toArray();
+
+            }
 
 
 
@@ -398,9 +405,6 @@ class UserService  extends BaseImplemetationService
     public function listmycompanyreps($rowsperpage, $currentpage, $search, $orderby,$companyid)
     {
 
-
-
-        //   dd($orderby);
 
         if($rowsperpage == null){
 
@@ -604,8 +608,6 @@ class UserService  extends BaseImplemetationService
             $selecteduser->DeactivatedOn = null;
 
             $selecteduser->IsActive = true;
-
-
 
             $selecteduser->updated_by = $params["userid"];
 

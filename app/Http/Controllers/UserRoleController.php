@@ -153,15 +153,17 @@ class UserRoleController extends Controller
 
         if($request->category == null){
 
-            $dataforpermisions =  Db::table('permissions')->get();
+         //   $dataforpermisions =  Db::table('permissions')->get();
 
 
         }else{
 
-            $dataforpermisions = Db::table('permissions')->where('categoryslug','=',$request->category)->get();
+       //     $dataforpermisions = Db::table('permissions')->where('realmid','=',$request->realmid)->get();
 
 
         }
+
+        $dataforpermisions = Db::table('permissions')->where('realmid','=',$request->realmid)->get();
 
 
         return response(array('responsemessage'=>'User Permissions',
@@ -173,6 +175,9 @@ class UserRoleController extends Controller
 
 
     }
+
+
+
 
     public function realmslist(Request $request){
 
