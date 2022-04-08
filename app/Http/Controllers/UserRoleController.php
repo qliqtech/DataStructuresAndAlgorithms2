@@ -85,6 +85,98 @@ class UserRoleController extends Controller
     }
 
 
+
+    public function updateuserrole(Request $request){
+
+
+
+        $request->request->add($this->GetUserAgent($request));
+
+        $datafromrequest = $request->json()->all();
+
+
+
+        if($request->user()->userroleid != UserRoles::FlairAdmin){
+
+
+            return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
+
+        }
+
+        $validator = Validator::make($datafromrequest, [
+
+            'userrolename' => 'required|string',
+            'description' => 'required|string',
+            'permissions' => 'required',
+            'userroleid' => 'required|int',
+        ]);
+        if ($validator->fails())
+        {
+
+            $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey=>ApiResponseCodesKeysAndMessages::SuccessCode,
+                ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey=>'Validation Errors',
+                'errors'=>$validator->errors()->toArray()
+
+
+            );
+
+
+            return response($responsevalues,400);
+
+
+        }
+
+
+        $allkeys = $request->all();
+
+        $slug = str_replace(" ","_",$allkeys['userrolename']) ;
+
+        $slug = strtolower($slug);
+
+      //  $allkeys['type'] = 'public';
+
+        $allkeys['slug'] = $slug;
+
+     //   $allkeys['status'] = 'active';
+
+     //   $allkeys['type'] = 'public';
+
+        $allkeys['permissions'] = json_encode($allkeys['permissions']);
+
+     //   $allkeys['is_system_generated'] = false;
+
+
+        $userroledetails = Userrole::where('id',$allkeys["userroleid"])->first();
+
+        if($userroledetails == null){
+
+            return response(array('responsemessage'=>'User role cannot be found'),404);
+
+        }
+
+
+        if($userroledetails->is_system_generated == true){
+
+
+            return response(array('responsemessage'=>'User role cannot be updated. It is system generated '),401);
+
+        }
+
+        Userrole::where('id',$allkeys["userroleid"])->
+        update(['userrolename' => $allkeys['userrolename'],
+            'slug' => $allkeys['slug'],
+            'description' => $allkeys['description'],
+            'permissions' => $allkeys['permissions'],
+            ]);
+
+
+
+        return response(array('responsemessage'=>'User role updated successfully'),200);
+
+
+    }
+
+
     public function userroledetail(Request $request){
 
 
