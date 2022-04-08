@@ -285,6 +285,8 @@ class UserRoleController extends Controller
 
     }
 
+
+
     public function listuserroles(Request $request){
 
 

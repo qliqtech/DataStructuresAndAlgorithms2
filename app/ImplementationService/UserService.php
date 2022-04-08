@@ -750,6 +750,7 @@ class UserService  extends BaseImplemetationService
                     'userrolename',
                     'status',
                     'description',
+                    'is_system_generated',
                     DB::raw("count(users.id) as numberofusers")
                 )->leftJoin('users', 'users.userroleid', '=', 'userroles.id')
                 ->Where('realmid','=',  $realmid)
