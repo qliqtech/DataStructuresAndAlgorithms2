@@ -116,7 +116,14 @@ class UserRoleController extends Controller
 
         $permissions = json_decode($userrole->permissions,true);
 
-        $dataforpermisions = Db::table('permissions')->whereIn('slug', $permissions)->get();
+        $dataforpermisions = array();
+
+        if($permissions != null){
+
+            $dataforpermisions = Db::table('permissions')->whereIn('slug', $permissions)->get();
+
+        }
+
 
 
         $userrole["realm"] = $userrealm;
