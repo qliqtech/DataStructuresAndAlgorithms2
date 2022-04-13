@@ -314,7 +314,7 @@ class UserService  extends BaseImplemetationService
         try {
 
             if($search == null) {
-
+                  //  die();
 
                 $users = DB::table('users')
                     ->join('companies', 'users.employerid', '=', 'companies.id')
@@ -337,7 +337,7 @@ class UserService  extends BaseImplemetationService
 
                     )//->where('fullname','LIKE','%' . $search. '%')
                     ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
-                    ->Where('users.IsDeleted', '=', null)
+                  //  ->Where('users.IsDeleted', '=', null)
                     ->orderBy("userid", $orderby)
                     ->paginate($rowsperpage, ['*'], 'page', $currentpage);
 
@@ -424,8 +424,12 @@ class UserService  extends BaseImplemetationService
 
         try {
 
+            // die();
 
-            $users =  DB::table('users')
+            if ($search != null) {
+
+
+            $users = DB::table('users')
                 ->join('companies', 'users.employerid', '=', 'companies.id')
                 ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                 ->select('users.id AS userid', 'registeredcompanyname',
@@ -445,47 +449,51 @@ class UserService  extends BaseImplemetationService
                     DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
 
 
-                )->where('fullname','LIKE','%' . $search. '%')
-                ->whereIn('userroleid',[UserRoles::CompanyAdmin,UserRoles::CompanyRep,])
-                ->where('employerid','=',$companyid)
-                ->Where('users.IsDeleted','=',null)
-
-                ->orderBy("userid",$orderby)
-                ->paginate($rowsperpage,['*'],'page',$currentpage);
-
-
-
+                )->where('fullname', 'LIKE', '%' . $search . '%')
+                ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                ->where('employerid', '=', $companyid)
+                ->Where('users.IsDeleted', '=', null)
+                ->orderBy("userid", $orderby)
+                ->paginate($rowsperpage, ['*'], 'page', $currentpage);
 
 
             return $users->toArray();
 
-            //   }else{
 
-            //       $companies =  DB::table('companies')
-            //           ->join('users', 'users.employerid', '=', 'companies.id')
-            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
-            //          ->select('companies.id AS companyid', 'registeredcompanyname',
-            //             'companylogourl',
-            //             'jobrolename',
-            //             'fullname',
-            //             'regionname',
-            //            'statusname',
-            //             'statusname_flair'
-            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
-
-            //         ->orderBy("companyid",$orderby)
-            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+        }else{
 
 
+                $users = DB::table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
 
-            //       return $companies->toArray();
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
+
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
 
 
+                    )//->where('fullname', 'LIKE', '%' . $search . '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                    ->where('employerid', '=', $companyid)
+                    ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
 
 
-            //    }
+                return $users->toArray();
 
-
+            }
 
         }catch (\Exception $ex){
 
