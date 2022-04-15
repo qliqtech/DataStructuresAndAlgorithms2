@@ -32,7 +32,7 @@ class ApiAuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'phonenumber' => 'required|string|Max:15',
-            'jobroleid' => 'required|int|exists:jobroles,id',
+            'jobroleid' => 'required|int',
 
         ]);
 

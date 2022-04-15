@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'selecteduserid' => 'required|int|exists:users,id',
+            'selecteduserid' => 'required|int',
 
 
         ]);
@@ -94,7 +94,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'selecteduserid' => 'required|int|exists:users,id',
+            'selecteduserid' => 'required|int',
 
 
         ]);
