@@ -9,4 +9,8 @@ class Companynssapprovalstatus extends Model
 
 
     protected $fillable = ['statusname'];
+
+
+    protected $connection = 'onboarding_connection';
+
 }

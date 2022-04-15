@@ -45,6 +45,9 @@ class User extends Authenticatable
         'useraccountstatus'
     ];
 
+    protected $connection = 'onboarding_connection';
+
+
 
 
     /**

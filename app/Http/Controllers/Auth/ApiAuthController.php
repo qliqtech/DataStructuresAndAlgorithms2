@@ -176,7 +176,7 @@ class ApiAuthController extends Controller
 
         $service = new AuthenticationService();
 
-        $response = $service->userinfo($request->user()->id);
+        $response = $service->userinfo($request->user->id);
 
         return $response;
     }
@@ -376,7 +376,7 @@ class ApiAuthController extends Controller
 
 
     public function logout (Request $request) {
-        $token = $request->user()->token();
+        $token = $request->user->token();
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!'];
         return response($response, 200);

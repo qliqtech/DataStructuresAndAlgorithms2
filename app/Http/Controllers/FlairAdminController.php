@@ -24,7 +24,7 @@ class FlairAdminController extends Controller
 
     public function listflairadmins (Request $request) {
 
-        if($request->user()->userroleid!=UserRoles::FlairAdmin){
+        if($request->user->userroleid!=UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Unauthorized Access. Flair Admins Only'),401);

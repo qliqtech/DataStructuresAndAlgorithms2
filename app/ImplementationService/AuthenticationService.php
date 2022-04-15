@@ -178,6 +178,9 @@ class AuthenticationService extends BaseImplemetationService
 
             $userdetails =User::where('confirmationcode',$params['confirmationcode'])->first();
 
+            $userdetails->setConnection('onboarding_connection');
+
+
             if($userdetails == null){
 
                 $this->StopProcessAndDisplayMessage(404,"Code not found");
@@ -1212,11 +1215,11 @@ class AuthenticationService extends BaseImplemetationService
         $companyservice = new CompanyService();
 
 
-        $userdetais = DB::table('users')->select(['id','fullname','email','userroleid','onboardingcompanystate','useraccountstatus','front_portrait_url','employerid'])->find($userid);
+        $userdetais = DB::connection('onboarding_connection')->table('users')->select(['id','fullname','email','userroleid','onboardingcompanystate','useraccountstatus','front_portrait_url','employerid'])->find($userid);
 
        // dd($userdetais);
 
-        $userroledetails = DB::table('userroles')->find($userdetais->userroleid);
+        $userroledetails = DB::connection('onboarding_connection')->table('userroles')->find($userdetais->userroleid);
 
         //  dd($userroledetails);
 

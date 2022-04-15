@@ -10,6 +10,7 @@ class Realm extends Model
 
     protected $fillable = ['realmname'];
 
+    protected $connection = 'onboarding_connection';
 
 
 }

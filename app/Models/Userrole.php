@@ -9,4 +9,7 @@ class Userrole extends Model
 
     protected $fillable = ['userrolename','slug','description','status','permissions','created_by','is_system_generated','type','realmid','permissions'];
 
+
+    protected $connection = 'onboarding_connection';
+
 }

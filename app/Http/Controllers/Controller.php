@@ -21,9 +21,9 @@ class Controller extends BaseController
 
         $useremail = null;
 
-        if($request->user() != null){
+        if($request->user != null){
 
-            $userid = $request->user()->id;
+            $userid = $request->user->id;
 
             $useremail = $request->email;
         }

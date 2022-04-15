@@ -25,7 +25,7 @@ class UserRoleController extends Controller
 
 
 
-        if($request->user()->userroleid != UserRoles::FlairAdmin){
+        if($request->user->userroleid != UserRoles::FlairAdmin){
 
 
         return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
@@ -96,7 +96,7 @@ class UserRoleController extends Controller
 
 
 
-        if($request->user()->userroleid != UserRoles::FlairAdmin){
+        if($request->user->userroleid != UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
@@ -180,7 +180,7 @@ class UserRoleController extends Controller
     public function userroledetail(Request $request){
 
 
-        if($request->user()->userroleid != UserRoles::FlairAdmin){
+        if($request->user->userroleid != UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
@@ -196,7 +196,7 @@ class UserRoleController extends Controller
             response(array('responsemessage'=>'User role does not exist',),404);
         }
 
-        $userrealm = DB::table('realms')->find($userrole->realmid);
+        $userrealm = DB::connection('onboarding_connection')->table('realms')->find($userrole->realmid);
 
         if($userrealm == null){
 
@@ -212,7 +212,7 @@ class UserRoleController extends Controller
 
         if($permissions != null){
 
-            $dataforpermisions = Db::table('permissions')->whereIn('slug', $permissions)->get();
+            $dataforpermisions = Db::connection('onboarding_connection')->table('permissions')->whereIn('slug', $permissions)->get();
 
         }
 
@@ -239,7 +239,7 @@ class UserRoleController extends Controller
 
 
 
-        if($request->user()->userroleid != UserRoles::FlairAdmin){
+        if($request->user->userroleid != UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
@@ -262,7 +262,7 @@ class UserRoleController extends Controller
 
         }
 
-        $dataforpermisions = Db::table('permissions')->where('realmid','=',$request->realmid)->get();
+        $dataforpermisions = Db::connection('onboarding_connection')->table('permissions')->where('realmid','=',$request->realmid)->get();
 
 
         return response(array('responsemessage'=>'User Permissions',
@@ -281,7 +281,7 @@ class UserRoleController extends Controller
     public function realmslist(Request $request){
 
 
-        return DB::table('realms')->whereIn('id',[1,2,3])->get();
+        return DB::connection('onboarding_connection')->table('realms')->whereIn('id',[1,2,3])->get();
 
     }
 
@@ -290,7 +290,7 @@ class UserRoleController extends Controller
     public function listuserroles(Request $request){
 
 
-        if($request->user()->userroleid != UserRoles::FlairAdmin){
+        if($request->user->userroleid != UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Access denied. Flair Admins only'),401);
@@ -326,7 +326,7 @@ class UserRoleController extends Controller
         }
 
 
-        if($request->user()->userroleid == UserRoles::FlairAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin){
 
 
             $userroleid = $request->userroleid;
@@ -371,7 +371,7 @@ class UserRoleController extends Controller
         }
 
 
-        if($request->user()->userroleid == UserRoles::FlairAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin){
 
 
             $userroleid = $request->userroleid;
@@ -408,10 +408,10 @@ class UserRoleController extends Controller
     {
 
 
-        if ($request->user()->userroleid == UserRoles::FlairAdmin) {
+        if ($request->user->userroleid == UserRoles::FlairAdmin) {
 
 
-            $permissioncategory = DB::table('permissions')->select(['category', 'categoryslug'])->groupBy('categoryslug')->get();
+            $permissioncategory = DB::connection('onboarding_connection')->table('permissions')->select(['category', 'categoryslug'])->groupBy('categoryslug')->get();
 
             return $permissioncategory;
         }

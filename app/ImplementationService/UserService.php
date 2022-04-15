@@ -45,7 +45,7 @@ class UserService  extends BaseImplemetationService
 
          //   if($search == null){
 
-                $users =  DB::table('users')
+                $users =  DB::connection('onboarding_connection')->table('users')
                     ->select('users.id AS id',
                         'fullname',
                         'useraccountstatus',
@@ -145,7 +145,7 @@ class UserService  extends BaseImplemetationService
 
             //   if($search == null){
 
-            $users =  DB::table('users')
+            $users =  DB::connection('onboarding_connection')->table('users')
                 ->select('users.id AS id',
                     'fullname',
                     'useraccountstatus',
@@ -242,7 +242,7 @@ class UserService  extends BaseImplemetationService
         try {
 
 
-            $users =  DB::table('users')
+            $users =  DB::connection('onboarding_connection')->table('users')
                 ->select('id',
                     'fullname',
                     'useraccountstatus',
@@ -316,7 +316,7 @@ class UserService  extends BaseImplemetationService
             if($search == null) {
                   //  die();
 
-                $users = DB::table('users')
+                $users = DB::connection('onboarding_connection')->table('users')
                     ->join('companies', 'users.employerid', '=', 'companies.id')
                     ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                     ->select('users.id AS userid', 'registeredcompanyname',
@@ -347,7 +347,7 @@ class UserService  extends BaseImplemetationService
             }else{
 
 
-                $users = DB::table('users')
+                $users = DB::connection('onboarding_connection')->table('users')
                     ->join('companies', 'users.employerid', '=', 'companies.id')
                     ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                     ->select('users.id AS userid', 'registeredcompanyname',
@@ -429,7 +429,7 @@ class UserService  extends BaseImplemetationService
             if ($search != null) {
 
 
-            $users = DB::table('users')
+            $users = DB::connection('onboarding_connection')->table('users')
                 ->join('companies', 'users.employerid', '=', 'companies.id')
                 ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                 ->select('users.id AS userid', 'registeredcompanyname',
@@ -463,7 +463,7 @@ class UserService  extends BaseImplemetationService
         }else{
 
 
-                $users = DB::table('users')
+                $users = DB::connection('onboarding_connection')->table('users')
                     ->join('companies', 'users.employerid', '=', 'companies.id')
                     ->join('userroles', 'users.userroleid', '=', 'userroles.id')
                     ->select('users.id AS userid', 'registeredcompanyname',
@@ -542,6 +542,9 @@ class UserService  extends BaseImplemetationService
 
             $selecteduser = User::find($params["selecteduserid"]);
 
+            $selecteduser->setConnection('onboarding_connection');
+
+
             $selecteduser->useraccountstatus = "inactive";
 
             $selecteduser->DeactivatedOn = now();
@@ -611,6 +614,9 @@ class UserService  extends BaseImplemetationService
 
             $selecteduser = User::find($params["selecteduserid"]);
 
+            $selecteduser->setConnection('onboarding_connection');
+
+
             $selecteduser->useraccountstatus = "active";
 
             $selecteduser->DeactivatedOn = null;
@@ -671,10 +677,18 @@ class UserService  extends BaseImplemetationService
                 return $this::responseHelper($responsearray)[0];
             }
 
-            $params['activityname'] = "User Deactivation";
+            $params['activityname'] = "User Deletion";
 
 
             $selecteduser = User::find($params["selecteduserid"]);
+
+            $selecteduser->setConnection('onboarding_connection');
+
+
+            //   $selecteduser = DB::connection('onboarding_connection')->table('users')->find($params["selecteduserid"]);
+
+
+        //    dd($selecteduser);
 
             $selecteduser->useraccountstatus = "deleted";
 
@@ -753,7 +767,7 @@ class UserService  extends BaseImplemetationService
 
             //   if($search == null){
 
-            $users =  DB::table('userroles')
+            $users =  DB::connection('onboarding_connection')->table('userroles')
                 ->select('userroles.id AS userroleid',
                     'userrolename',
                     'status',

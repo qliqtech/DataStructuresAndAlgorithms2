@@ -44,10 +44,10 @@ class UserController extends Controller
         $allkeys = $request->all();
 
 
-        if($request->user()->userroleid == UserRoles::FlairAdmin || $request->user()->userroleid == UserRoles::CompanyAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin || $request->user->userroleid == UserRoles::CompanyAdmin){
 
 
-            if($request->selecteduserid == $request->user()->id){
+            if($request->selecteduserid == $request->user->id){
 
 
                 return response(array('responsemessage'=>'You cannot deactivate yourself'),401);
@@ -56,12 +56,15 @@ class UserController extends Controller
 
             $userservice = new UserService();
 
-            if($request->user()->userroleid == UserRoles::CompanyAdmin){
+            if($request->user->userroleid == UserRoles::CompanyAdmin){
 
                 $selecteduser = User::find($request->selecteduserid);
 
+                $selecteduser->setConnection('onboarding_connection');
 
-                if($selecteduser->employerid == $request->user()->employerid){
+
+
+                if($selecteduser->employerid == $request->user->employerid){
 
 
                    return $userservice->deactivateuser($allkeys);
@@ -113,10 +116,10 @@ class UserController extends Controller
         $allkeys = $request->all();
 
 
-        if($request->user()->userroleid == UserRoles::FlairAdmin || $request->user()->userroleid == UserRoles::CompanyAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin || $request->user->userroleid == UserRoles::CompanyAdmin){
 
 
-            if($request->selecteduserid == $request->user()->id){
+            if($request->selecteduserid == $request->user->id){
 
 
 
@@ -125,12 +128,15 @@ class UserController extends Controller
 
             $userservice = new UserService();
 
-            if($request->user()->userroleid == UserRoles::CompanyAdmin){
+            if($request->user->userroleid == UserRoles::CompanyAdmin){
 
                 $selecteduser = User::find($request->selecteduserid);
 
+                $selecteduser->setConnection('onboarding_connection');
 
-                if($selecteduser->employerid == $request->user()->employerid){
+
+
+                if($selecteduser->employerid == $request->user->employerid){
 
 
                     return $userservice->activateuser($allkeys);
@@ -160,7 +166,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'selecteduserid' => 'required|int|exists:users,id',
+            'selecteduserid' => 'required|int',
 
 
         ]);
@@ -182,22 +188,24 @@ class UserController extends Controller
         $allkeys = $request->all();
 
 
-        if($request->user()->userroleid == UserRoles::FlairAdmin || $request->user()->userroleid == UserRoles::CompanyAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin || $request->user->userroleid == UserRoles::CompanyAdmin){
 
 
-            if($request->selecteduserid == $request->user()->id){
+            if($request->selecteduserid == $request->user->id){
 
 
             }
 
             $userservice = new UserService();
 
-            if($request->user()->userroleid == UserRoles::CompanyAdmin){
+            if($request->user->userroleid == UserRoles::CompanyAdmin){
 
                 $selecteduser = User::find($request->selecteduserid);
 
+                $selecteduser->setConnection('onboarding_connection');
 
-                if($selecteduser->employerid == $request->user()->employerid){
+
+                if($selecteduser->employerid == $request->user->employerid){
 
 
                     return $userservice->deleteuser($allkeys);

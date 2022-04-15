@@ -50,6 +50,7 @@ class Company extends Model
 
     ];
 
+    protected $connection = 'onboarding_connection';
 
 
 

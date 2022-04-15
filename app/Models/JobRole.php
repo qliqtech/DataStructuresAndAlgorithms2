@@ -11,4 +11,7 @@ class JobRole extends Model
 
     protected $table = 'jobroles';
 
+    protected $connection = 'onboarding_connection';
+
+
 }

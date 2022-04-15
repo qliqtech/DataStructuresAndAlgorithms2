@@ -102,7 +102,7 @@ class CandidateController extends Controller
 
     public function listcandidates (Request $request) {
 
-        if($request->user()->userroleid!=UserRoles::FlairAdmin){
+        if($request->user->userroleid!=UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Unauthorized Access. Flair Admins Only'),401);

@@ -565,7 +565,7 @@ class CompanyService extends BaseImplemetationService
 
             if($search == null){
 
-                $companies =  DB::table('companies')
+                $companies =  DB::connection('onboarding_connection')->table('companies')
                     ->join('users', 'users.employerid', '=', 'companies.id')
                     ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.requestapprovalstatus')
                     ->select('companies.id AS companyid', 'registeredcompanyname',
@@ -587,7 +587,7 @@ class CompanyService extends BaseImplemetationService
             }else{
 
 
-                $companies =  DB::table('companies')
+                $companies =  DB::connection('onboarding_connection')->table('companies')
                     ->join('users', 'users.employerid', '=', 'companies.id')
                     ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.requestapprovalstatus')
                     ->select('companies.id AS companyid', 'registeredcompanyname',
@@ -676,7 +676,7 @@ class CompanyService extends BaseImplemetationService
 
             if($search == null){
 
-                $companies =  DB::table('companies')
+                $companies =  DB::connection('onboarding_connection')->table('companies')
                     ->join('users', 'users.employerid', '=', 'companies.id')
                     ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
                     ->select('companies.id AS companyid', 'registeredcompanyname',
@@ -694,7 +694,7 @@ class CompanyService extends BaseImplemetationService
 
             }else{
 
-                $companies =  DB::table('companies')
+                $companies =  DB::connection('onboarding_connection')->table('companies')
                     ->join('users', 'users.employerid', '=', 'companies.id')
                     ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
                     ->select('companies.id AS companyid', 'registeredcompanyname',
@@ -919,10 +919,10 @@ class CompanyService extends BaseImplemetationService
             ///
             $companystatusdbops = new CompanyApprovalStatusDbOps(new Companynssapprovalstatus());
 
-            $companyapprovalstatus = DB::table('Companynssapprovalstatus')->select(['id','statusname','statusname_flair'])->find($companydetails["flairrequeststatus"]);
+            $companyapprovalstatus = DB::connection('onboarding_connection')->table('Companynssapprovalstatus')->select(['id','statusname','statusname_flair'])->find($companydetails["flairrequeststatus"]);
 
 
-            $nssapprovalstatus =  DB::table('Companynssapprovalstatus')->select(['id','statusname','statusname_nss'])-> find($companydetails["requestapprovalstatus"]);
+            $nssapprovalstatus =  DB::connection('onboarding_connection')->table('Companynssapprovalstatus')->select(['id','statusname','statusname_nss'])-> find($companydetails["requestapprovalstatus"]);
 
 
          //   dd($nssapprovalstatus);
@@ -1236,7 +1236,7 @@ class CompanyService extends BaseImplemetationService
         if ($companydetails->requestapprovalstatus != null) {
 
 
-            $nssapprovalstatus = DB::table('Companynssapprovalstatus')->find($companydetails->requestapprovalstatus);
+            $nssapprovalstatus = DB::connection('onboarding_connection')->table('Companynssapprovalstatus')->find($companydetails->requestapprovalstatus);
 
             $approvalstatusname = $nssapprovalstatus->statusname;
 
@@ -1260,7 +1260,7 @@ class CompanyService extends BaseImplemetationService
         if ($companydetails->flairrequeststatus != null) {
 
 
-            $nssapprovalstatus = DB::table('Companynssapprovalstatus')->find($companydetails->flairrequeststatus);
+            $nssapprovalstatus = DB::connection('onboarding_connection')->table('Companynssapprovalstatus')->find($companydetails->flairrequeststatus);
 
 
 

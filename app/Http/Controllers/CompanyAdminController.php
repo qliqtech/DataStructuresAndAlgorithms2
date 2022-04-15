@@ -26,7 +26,7 @@ class CompanyAdminController extends Controller
         $request->request->add($this->GetUserAgent($request));
 
 
-        if($request->user()->userroleid==UserRoles::FlairAdmin){
+        if($request->user->userroleid==UserRoles::FlairAdmin){
 
 
 
@@ -39,14 +39,14 @@ class CompanyAdminController extends Controller
 
         }
 
-        if($request->user()->userroleid==UserRoles::CompanyAdmin){
+        if($request->user->userroleid==UserRoles::CompanyAdmin){
 
 
 
 
             return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
                 ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'My Company Admins List',
-                'details' => $usermanagementservice->listmycompanyreps($request->rowsperpage,$request->page,$request->search,$request->order,$request->user()->employerid));
+                'details' => $usermanagementservice->listmycompanyreps($request->rowsperpage,$request->page,$request->search,$request->order,$request->user->employerid));
 
 
 
@@ -66,7 +66,7 @@ class CompanyAdminController extends Controller
 
     public function listmycompanyreps (Request $request) {
 
-        if($request->user()->userroleid!=UserRoles::FlairAdmin){
+        if($request->user->userroleid!=UserRoles::FlairAdmin){
 
 
             return response(array('responsemessage'=>'Unauthorized Access. Flair Admins Only'),401);
