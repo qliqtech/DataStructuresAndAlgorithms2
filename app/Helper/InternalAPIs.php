@@ -56,8 +56,9 @@ class InternalAPIs
 
         if($responsecode!="200"){
 
-            echo "Error: ". $response; die();
+          //  echo "Error: ". $response; die();
 
+            return null;
         }
 
 

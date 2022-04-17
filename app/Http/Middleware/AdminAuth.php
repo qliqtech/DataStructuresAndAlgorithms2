@@ -32,13 +32,14 @@ class AdminAuth
 
         $response = $internalapi->getuserdetails($token);
 
+        if($response == null){
 
-        //   dd($response);
+            $message = ["responsemessage" => "Authentication failed"];
 
-        //  $request->user()->update($response);// =
+            return response($message, 401);
 
 
-        //  return $request->user();
+        }
 
         $response['bearertoken'] = $token;
 
