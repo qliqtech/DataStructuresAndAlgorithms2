@@ -42,7 +42,7 @@ spec:
               value: "base64:K76o6mAF+j3tQ/QnB+FxsughYqtys8k+yE75nLilmlM="
             - name: APP_DEBUG
               value: "true"
-              - name: FLAIR_SECURE_BASE_URL
+            - name: FLAIR_SECURE_BASE_URL
               value: "https://secure.myflair.africa"
             - name: FLAIR_APP_BASE_URL
               value: "https://app.myflair.africa"
