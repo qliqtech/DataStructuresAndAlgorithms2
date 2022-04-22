@@ -1,0 +1,96 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-db-migration-job"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-db-migration-job"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-db-migration-job
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env: 
+            - name: APP_NAME
+              value: "Flair-User-Service"
+            - name: APP_ENV
+              value: "production"
+            - name: APP_KEY
+              value: "base64:K76o6mAF+j3tQ/QnB+FxsughYqtys8k+yE75nLilmlM="
+            - name: APP_DEBUG
+              value: "false"
+            - name: APP_URL
+              value: "http://localhost"
+            - name: LOG_CHANNEL
+              value: "stderr"
+            - name: BROADCAST_DRIVER
+              value: "log" 
+            - name: SESSION_DRIVER
+              value: "file"
+            - name: SESSION_LIFETIME
+              value: "120"
+            - name: MAIL_MAILER
+              value: "smtp"
+            - name: MAIL_HOST
+              value: "email-smtp.eu-west-1.amazonaws.com"
+            - name: MAIL_PORT
+              value: "587"
+            - name: MAIL_ENCRYPTION
+              value: "tls"
+            - name: MAIL_FROM_ADDRESS
+              value: null
+            - name: MAIL_FROM_NAME
+              value: "Flair Africa"
+            - name: CONTAINER_ROLE
+              value: "db-migrator" 
+            - name: QUEUE_CONNECTION
+              value: "database"  
+            - name: CACHE_DRIVER
+              value: "file" 
+            - name: DB_CONNECTION
+              value: "mysql" 
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-host
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-database
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-password

@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "usermanagement-service-api.fullname" . }}
+  name: {{ include "flair-user-svc.fullname" . }}
   labels:
-    {{- include "usermanagement-service-api.labels" . | nindent 4 }}
+    {{- include "flair-user-svc.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "usermanagement-service-api.fullname" . }}
+    name: {{ include "flair-user-svc.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

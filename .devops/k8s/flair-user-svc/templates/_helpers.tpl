@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "usermanagement-service-api.name" -}}
+{{- define "flair-user-svc.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "usermanagement-service-api.fullname" -}}
+{{- define "flair-user-svc.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "usermanagement-service-api.chart" -}}
+{{- define "flair-user-svc.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "usermanagement-service-api.labels" -}}
-helm.sh/chart: {{ include "usermanagement-service-api.chart" . }}
-{{ include "usermanagement-service-api.selectorLabels" . }}
+{{- define "flair-user-svc.labels" -}}
+helm.sh/chart: {{ include "flair-user-svc.chart" . }}
+{{ include "flair-user-svc.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "usermanagement-service-api.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "usermanagement-service-api.name" . }}
+{{- define "flair-user-svc.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "flair-user-svc.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "usermanagement-service-api.serviceAccountName" -}}
+{{- define "flair-user-svc.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "usermanagement-service-api.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "flair-user-svc.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
