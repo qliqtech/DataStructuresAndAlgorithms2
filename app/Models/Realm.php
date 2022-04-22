@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JobRole extends Model
+class Realm extends Model
 {
 
-    protected $fillable = ['JobRoleName','IsActive'];
 
-    protected $table = 'jobroles';
+    protected $fillable = ['realmname'];
 
     protected $connection = 'onboarding_connection';
 

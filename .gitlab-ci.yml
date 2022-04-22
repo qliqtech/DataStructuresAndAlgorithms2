@@ -4,8 +4,8 @@ services:
 variables: 
   DOCKER_DRIVER: overlay
   DOCKER_TLS_CERTDIR: ""
-  DEPLOYMENT_NAME: flair-onboarding-svc
-  REGISTRY_REPO_NAME: flair-onboarding
+  DEPLOYMENT_NAME: flair-user-svc
+  REGISTRY_REPO_NAME: flair-user
   DOCKER_REGISTRY: 212423532071.dkr.ecr.eu-west-1.amazonaws.com
   AWS_REGION: eu-west-1 
   AWS_CLUSTER_NAME: 'nss_k8s_cluster'

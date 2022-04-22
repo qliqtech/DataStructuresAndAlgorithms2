@@ -1,0 +1,841 @@
+<?php
+
+namespace App\ImplementationService;
+
+use App\CacheOperations\CacheUserRegistrationOps;
+use App\DBOperations\UserDBOperations;
+use App\Enums\InAppResponsTypes;
+use App\Enums\UserRoles;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
+class UserService  extends BaseImplemetationService
+{
+
+
+
+
+    public function listflairadmins($rowsperpage, $currentpage, $search, $orderby)
+    {
+
+
+
+        //   dd($orderby);
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+            //companyname,companyid,repname,reprole ,companylocation,companylogo,status,region
+
+
+         //   if($search == null){
+
+                $users =  DB::connection('onboarding_connection')->table('users')
+                    ->select('users.id AS id',
+                        'fullname',
+                        'useraccountstatus',
+                        'front_portrait_url',
+                        'email',
+                        'userrolename',
+                        'description AS userroledescription'
+
+                    )->join('userroles','userroles.id','=','users.userroleid')
+                    ->Where('fullname','LIKE','%' . $search. '%')
+                    ->Where('userroleid','=',UserRoles::FlairAdmin)
+                    ->Where('IsDeleted','=',null)
+
+
+
+                    ->orderBy("id",$orderby)
+                    ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+                return $users->toArray();
+
+         //   }else{
+
+         //       $companies =  DB::table('companies')
+         //           ->join('users', 'users.employerid', '=', 'companies.id')
+          //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
+          //          ->select('companies.id AS companyid', 'registeredcompanyname',
+           //             'companylogourl',
+           //             'jobrolename',
+           //             'fullname',
+           //             'regionname',
+            //            'statusname',
+           //             'statusname_flair'
+            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
+
+           //         ->orderBy("companyid",$orderby)
+           //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+         //       return $companies->toArray();
+
+
+
+
+        //    }
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+
+    public function listnssadmins($rowsperpage, $currentpage, $search, $orderby)
+    {
+
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+            //companyname,companyid,repname,reprole ,companylocation,companylogo,status,region
+
+
+            //   if($search == null){
+
+            $users =  DB::connection('onboarding_connection')->table('users')
+                ->select('users.id AS id',
+                    'fullname',
+                    'useraccountstatus',
+                    'front_portrait_url',
+                    'email',
+                    'userrolename',
+                    'description AS userroledescription'
+
+                )->join('userroles','userroles.id','=','users.userroleid')
+                ->orWhere('fullname','LIKE','%' . $search. '%')
+                ->Where('userroleid','=',UserRoles::NSSAdministrator)
+                ->Where('IsDeleted','=',null)
+
+
+                ->orderBy("id",$orderby)
+                ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+            return $users->toArray();
+
+            //   }else{
+
+            //       $companies =  DB::table('companies')
+            //           ->join('users', 'users.employerid', '=', 'companies.id')
+            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
+            //          ->select('companies.id AS companyid', 'registeredcompanyname',
+            //             'companylogourl',
+            //             'jobrolename',
+            //             'fullname',
+            //             'regionname',
+            //            'statusname',
+            //             'statusname_flair'
+            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
+
+            //         ->orderBy("companyid",$orderby)
+            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+            //       return $companies->toArray();
+
+
+
+
+            //    }
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+    public function listcandidates($rowsperpage, $currentpage, $search, $orderby)
+    {
+
+
+
+        //   dd($orderby);
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+
+            $users =  DB::connection('onboarding_connection')->table('users')
+                ->select('id',
+                    'fullname',
+                    'useraccountstatus',
+                    'front_portrait_url',
+                    'email',
+                    'phonenumber',
+                    DB::raw('DATE_FORMAT(created_at, "%d %M, %Y") as created_at')
+                )
+                ->orWhere('fullname','LIKE','%' . $search. '%')
+                ->Where('userroleid','=',UserRoles::NSSCandidate)
+                ->orderBy("id",$orderby)
+                ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+
+            return $users->toArray();
+
+
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+
+    public function listcompanyreps($rowsperpage, $currentpage, $search, $orderby)
+    {
+
+
+
+        //   dd($orderby);
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+            if($search == null) {
+                  //  die();
+
+                $users = DB::connection('onboarding_connection')->table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
+
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+
+
+                    )//->where('fullname','LIKE','%' . $search. '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                  //  ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
+
+
+                return $users->toArray();
+
+            }else{
+
+
+                $users = DB::connection('onboarding_connection')->table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
+
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+
+
+                    )->where('fullname','LIKE','%' . $search. '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                    ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
+
+
+                return $users->toArray();
+
+            }
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+
+    public function listmycompanyreps($rowsperpage, $currentpage, $search, $orderby,$companyid)
+    {
+
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+            // die();
+
+            if ($search != null) {
+
+
+            $users = DB::connection('onboarding_connection')->table('users')
+                ->join('companies', 'users.employerid', '=', 'companies.id')
+                ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                ->select('users.id AS userid', 'registeredcompanyname',
+                    'companylogourl',
+                    'jobrolename',
+                    'fullname',
+                    'email',
+                    'userrolename',
+                    'userroles.slug AS userroleslug',
+                    'users.userroleid',
+                    'userroles.type AS user_role_type',
+
+                    'phonenumber',
+                    'useraccountstatus',
+                    'regionname',
+
+                    DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+
+
+                )->where('fullname', 'LIKE', '%' . $search . '%')
+                ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                ->where('employerid', '=', $companyid)
+                ->Where('users.IsDeleted', '=', null)
+                ->orderBy("userid", $orderby)
+                ->paginate($rowsperpage, ['*'], 'page', $currentpage);
+
+
+            return $users->toArray();
+
+
+        }else{
+
+
+                $users = DB::connection('onboarding_connection')->table('users')
+                    ->join('companies', 'users.employerid', '=', 'companies.id')
+                    ->join('userroles', 'users.userroleid', '=', 'userroles.id')
+                    ->select('users.id AS userid', 'registeredcompanyname',
+                        'companylogourl',
+                        'jobrolename',
+                        'fullname',
+                        'email',
+                        'userrolename',
+                        'userroles.slug AS userroleslug',
+                        'users.userroleid',
+                        'userroles.type AS user_role_type',
+
+                        'phonenumber',
+                        'useraccountstatus',
+                        'regionname',
+
+                        DB::raw('DATE_FORMAT(users.created_at, "%d %M, %Y") as created_at')
+
+
+                    )//->where('fullname', 'LIKE', '%' . $search . '%')
+                    ->whereIn('userroleid', [UserRoles::CompanyAdmin, UserRoles::CompanyRep,])
+                    ->where('employerid', '=', $companyid)
+                    ->Where('users.IsDeleted', '=', null)
+                    ->orderBy("userid", $orderby)
+                    ->paginate($rowsperpage, ['*'], 'page', $currentpage);
+
+
+                return $users->toArray();
+
+            }
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+
+    public function deactivateuser($params){
+
+
+
+        $selecteduser = new User();
+
+        $userdboperations = new UserDBOperations($selecteduser);
+
+        $responsearray = array();
+
+
+
+        try {
+
+            if ($params == null) {
+
+                return $this::responseHelper($responsearray)[0];
+            }
+
+            $params['activityname'] = "User Deactivation";
+
+
+            $selecteduser = User::find($params["selecteduserid"]);
+
+            $selecteduser->setConnection('onboarding_connection');
+
+
+            $selecteduser->useraccountstatus = "inactive";
+
+            $selecteduser->DeactivatedOn = now();
+
+            $selecteduser->IsActive = false;
+
+
+
+            $selecteduser->updated_by = $params["userid"];
+
+            $selecteduser->save();
+
+
+
+        }catch (\Exception $ex){
+
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+            //   echo $ex->getMessage();die();
+
+
+            $this::StopProcessAndDisplayMessage(500,$ex->getMessage());
+            $params['activityname'] = "User Deactivation";
+
+            $params['responsemessage'] = $ex->getMessage();
+
+            //    return $this::responseHelper($responsearray)[0];
+        }
+
+        $responsearray = array_add($responsearray,'AuditItems',$params);
+
+
+        //
+
+         $this::responseHelper($responsearray);
+
+        return array('responsemessage'=>'User Deactivated Successfully');
+    }
+
+
+
+    public function activateuser($params){
+
+
+
+        $selecteduser = new User();
+
+        $userdboperations = new UserDBOperations($selecteduser);
+
+        $responsearray = array();
+
+
+
+        try {
+
+            if ($params == null) {
+
+                return $this::responseHelper($responsearray)[0];
+            }
+
+            $params['activityname'] = "User Deactivation";
+
+
+            $selecteduser = User::find($params["selecteduserid"]);
+
+            $selecteduser->setConnection('onboarding_connection');
+
+
+            $selecteduser->useraccountstatus = "active";
+
+            $selecteduser->DeactivatedOn = null;
+
+            $selecteduser->IsActive = true;
+
+            $selecteduser->updated_by = $params["userid"];
+
+            $selecteduser->save();
+
+
+
+        }catch (\Exception $ex){
+
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage(500,$ex->getMessage());
+            $params['activityname'] = "User Activation";
+
+            $params['responsemessage'] = $ex->getMessage();
+
+            //    return $this::responseHelper($responsearray)[0];
+        }
+
+        $responsearray = array_add($responsearray,'AuditItems',$params);
+
+
+        //
+
+        $this::responseHelper($responsearray);
+
+        return array('responsemessage'=>'User Activated Successfully');
+    }
+
+
+
+    public function deleteuser($params){
+
+
+
+        $selecteduser = new User();
+
+        $userdboperations = new UserDBOperations($selecteduser);
+
+        $responsearray = array();
+
+
+
+        try {
+
+            if ($params == null) {
+
+                return $this::responseHelper($responsearray)[0];
+            }
+
+            $params['activityname'] = "User Deletion";
+
+
+            $selecteduser = User::find($params["selecteduserid"]);
+
+            $selecteduser->setConnection('onboarding_connection');
+
+
+            //   $selecteduser = DB::connection('onboarding_connection')->table('users')->find($params["selecteduserid"]);
+
+
+        //    dd($selecteduser);
+
+            $selecteduser->useraccountstatus = "deleted";
+
+            $selecteduser->IsDeletedOn = now();
+
+            $selecteduser->IsDeleted = true;
+
+            $selecteduser->DeletedBy = $params["userid"];
+
+
+            $selecteduser->save();
+
+
+
+        }catch (\Exception $ex){
+
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage(500,$ex->getMessage());
+            $params['activityname'] = "User Activation";
+
+            $params['responsemessage'] = $ex->getMessage();
+
+            //    return $this::responseHelper($responsearray)[0];
+        }
+
+        $responsearray = array_add($responsearray,'AuditItems',$params);
+
+
+        //
+
+        $this::responseHelper($responsearray);
+
+        return array('responsemessage'=>'User Deleted Successfully');
+    }
+
+
+
+
+    public function listuserroles($rowsperpage, $currentpage, $search, $orderby, $realmid)
+    {
+
+
+      //  $request->realmid
+        //   dd($orderby);
+
+        if($rowsperpage == null){
+
+            $rowsperpage = 15;
+        }
+
+        if($currentpage == null){
+
+            $currentpage = 1;
+        }
+
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+        if($orderby == null){
+
+            $orderby = "desc";
+        }
+
+
+        try {
+
+            //companyname,companyid,repname,reprole ,companylocation,companylogo,status,region
+
+
+            //   if($search == null){
+
+            $users =  DB::connection('onboarding_connection')->table('userroles')
+                ->select('userroles.id AS userroleid',
+                    'userrolename',
+                    'status',
+                    'description',
+                    'is_system_generated',
+                    DB::raw("count(users.id) as numberofusers")
+                )->leftJoin('users', 'users.userroleid', '=', 'userroles.id')
+                ->Where('realmid','=',  $realmid)
+
+                ->Where('userrolename','LIKE','%' . $search. '%')
+                ->groupBy('userroles.id')
+
+                ->orderBy("userroles.id",$orderby)
+                ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+            return $users->toArray();
+
+            //   }else{
+
+            //       $companies =  DB::table('companies')
+            //           ->join('users', 'users.employerid', '=', 'companies.id')
+            //          ->join('Companynssapprovalstatus', 'Companynssapprovalstatus.id', '=', 'companies.flairrequeststatus')
+            //          ->select('companies.id AS companyid', 'registeredcompanyname',
+            //             'companylogourl',
+            //             'jobrolename',
+            //             'fullname',
+            //             'regionname',
+            //            'statusname',
+            //             'statusname_flair'
+            //        )->where('registeredcompanyname','LIKE','%' . $search. '%')
+
+            //         ->orderBy("companyid",$orderby)
+            //         ->paginate($rowsperpage,['*'],'page',$currentpage);
+
+
+
+            //       return $companies->toArray();
+
+
+
+
+            //    }
+
+
+
+        }catch (\Exception $ex){
+
+
+            //   dd($ex->getMessage());
+
+            $responsearray = array(InAppResponsTypes::responsetypekey => InAppResponsTypes::Error,
+                InAppResponsTypes::responsemessagekey => $ex->getMessage()
+            );
+
+
+
+            $this::StopProcessAndDisplayMessage("500",$ex->getMessage());
+        }
+
+
+
+
+        // return $companydetails;
+    }
+
+
+
+
+
+}

@@ -84,7 +84,7 @@ class SyncAccountsController extends Controller
             'authorizationletter_url' => 'required|string',
         ]);
 
-        $datafromrequest["email"] = $request->user()->email;
+        $datafromrequest["email"] = $request->user->email;
 
         if ($validator->fails())
         {
@@ -106,7 +106,7 @@ class SyncAccountsController extends Controller
          $companyservice->submitcompanyrequest($datafromrequest);
 
 
-        $companystatus = $companyservice->checkcompanystatus($request->user()->employerid);
+        $companystatus = $companyservice->checkcompanystatus($request->user->employerid);
 
 
         return  $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey=>ApiResponseCodesKeysAndMessages::SuccessCode,
@@ -160,9 +160,9 @@ class SyncAccountsController extends Controller
 
         }
 
-        $companydetails = DB::table("companies")->find($userdetails->employerid);
+        $companydetails = DB::connection('onboarding_connection')->table("companies")->find($userdetails->employerid);
 
-        $nssapi = new NSSApis($request->user()->nsssyncapikey);
+        $nssapi = new NSSApis($request->user->nsssyncapikey);
 
         $response =  $nssapi->adduseragentaccount("test",$userdetails->fullname,$userdetails->email,$userdetails->phonenumber,$companydetails->requestedcompanyid);
 
@@ -213,7 +213,7 @@ class SyncAccountsController extends Controller
 
       //  dd($request->user());
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin || $request->user()->userroleid == UserRoles::NSSAdministrator) {
+        if($request->user->userroleid == UserRoles::FlairAdmin || $request->user->userroleid == UserRoles::NSSAdministrator) {
 
 
 
@@ -276,7 +276,7 @@ class SyncAccountsController extends Controller
         }
 
 
-        if($request->user()->userroleid == UserRoles::NSSAdministrator) {
+        if($request->user->userroleid == UserRoles::NSSAdministrator) {
 
 
            // $datafromrequest = $this->GetUserAgent($request);
@@ -285,6 +285,7 @@ class SyncAccountsController extends Controller
             return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
                 ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'company details',
                 'details' => $companyservice->listcompaniesfornssapproval($request->rowsperpage,$request->page,$request->search,$request->order));
+
 
         }else{
 
@@ -331,7 +332,7 @@ class SyncAccountsController extends Controller
         }
 
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin) {
+        if($request->user->userroleid == UserRoles::FlairAdmin) {
 
 
             // $datafromrequest = $this->GetUserAgent($request);
@@ -411,7 +412,7 @@ class SyncAccountsController extends Controller
 
         }
 
-        if($request->user()->userroleid == UserRoles::NSSAdministrator){
+        if($request->user->userroleid == UserRoles::NSSAdministrator){
 
             $companyservice->nssapproveorrejectcompanyrequest($datafromrequest);
 
@@ -482,7 +483,7 @@ class SyncAccountsController extends Controller
 
         }
 
-        if($request->user()->userroleid == UserRoles::SuperAdmin){
+        if($request->user->userroleid == UserRoles::FlairAdmin){
 
             $companyservice->flairapproveorrejectcompanyrequest($datafromrequest);
 
@@ -523,9 +524,9 @@ class SyncAccountsController extends Controller
 
         $companyservice = new CompanyService();
 
-        $companyid = $request->user()->employerid;
+        $companyid = $request->user->employerid;
 
-        if($request->user()->userroleid != UserRoles::CompanyAdmin){
+        if($request->user->userroleid != UserRoles::CompanyAdmin){
 
 
             return response('unauthorized access',401);

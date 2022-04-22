@@ -9,4 +9,7 @@ class Assignment extends Model
 
     protected $fillable = ['title','task','created_by','IsDeleted','classid'];
 
+
+    protected $connection = 'onboarding_connection';
+
 }

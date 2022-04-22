@@ -6,18 +6,23 @@ use App\Enums\ApiResponseCodesKeysAndMessages;
 use App\Enums\InAppResponsTypes;
 use App\Enums\UserRoles;
 use App\Helper\GenerateRandomCharactersHelper;
-use App\Helper\NSSApis;
 use App\ImplementationService\AuthenticationService;
 use App\ImplementationService\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class NSSAdminController extends Controller
+
+class FlairAdminController extends Controller
 {
 
 
 
-    public function listnssadmins (Request $request) {
+
+
+
+
+
+    public function listflairadmins (Request $request) {
 
         if($request->user->userroleid!=UserRoles::FlairAdmin){
 
@@ -33,14 +38,16 @@ class NSSAdminController extends Controller
 
 
         return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
-            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'NSS Admins List',
-            'details' => $usermanagementservice->listnssadmins($request->rowsperpage,$request->page,$request->search,$request->order));
+            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'Flair Admins List',
+            'details' => $usermanagementservice->listflairadmins($request->rowsperpage,$request->page,$request->search,$request->order));
 
 
 
 
 
     }
+
+
 
 
 }

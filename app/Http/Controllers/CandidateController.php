@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ApiResponseCodesKeysAndMessages;
 use App\Enums\InAppResponsTypes;
+use App\Enums\UserRoles;
 use App\Helper\FlairInternalAPIs;
 use App\Helper\GenerateRandomCharactersHelper;
 use App\Helper\GhanaPostAPI;
@@ -13,12 +14,13 @@ use App\Helper\NSSApis;
 use App\ImplementationService\AuthenticationService;
 use App\ImplementationService\BaseImplemetationService;
 use App\ImplementationService\CompanyService;
+use App\ImplementationService\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
 
-class CandidateOnboardingController extends Controller
+class CandidateController extends Controller
 {
 
     public function searchnspwithnssnumberanddob(Request $request){
@@ -97,78 +99,28 @@ class CandidateOnboardingController extends Controller
 
 
 
-    public function registercandidate (Request $request) {
+
+    public function listcandidates (Request $request) {
+
+        if($request->user->userroleid!=UserRoles::FlairAdmin){
+
+
+            return response(array('responsemessage'=>'Unauthorized Access. Flair Admins Only'),401);
+
+
+        }
 
         $request->request->add($this->GetUserAgent($request));
 
+        $usermanagementservice = new UserService();
 
 
-        $datafromrequest = $request->json()->all();
-
-
-
-        $validator = Validator::make($datafromrequest, [
-
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'fullname' => 'required|string|min:3',
-            'phonenumber' => 'required|string|Max:15',
-            'nssnumber' => 'required|string',
-
-        ]);
-
-
-        if ($validator->fails())
-        {
-
-            $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey=>ApiResponseCodesKeysAndMessages::ValidationError,
-                ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey=>'Validation Errors',
-                'errors'=>$validator->errors()->toArray()
-
-            );
-            //  dd($validator->errors());
-
-
-            return response($responsevalues,400);
-
-
-        }
+        return $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey => ApiResponseCodesKeysAndMessages::SuccessCode,
+            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey => 'Candidates Admins List',
+            'details' => $usermanagementservice->listcandidates($request->rowsperpage,$request->page,$request->search,$request->order));
 
 
 
-
-
-        $service = new AuthenticationService();
-
-        $datafromrequest['confirmationcode'] = GenerateRandomCharactersHelper::generaterandomAlphabets(20);
-
-
-        $response = $service->registercandidate($datafromrequest);
-
-
-
-        if($response[InAppResponsTypes::responsetypekey] == InAppResponsTypes::Success){
-
-
-            $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey=>ApiResponseCodesKeysAndMessages::SuccessCode,
-                ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey=>'Registration successfull. Confirmation link sent to your email: '.$datafromrequest['confirmationcode']
-
-            );
-
-
-            return response($responsevalues);
-        }
-
-
-        $responsevalues = array(ApiResponseCodesKeysAndMessages::ResponseCodeKey=>ApiResponseCodesKeysAndMessages::FailedCode,
-            ApiResponseCodesKeysAndMessages::ResponseMessageCodeKey=>'Error',
-
-
-
-        );
-
-
-        return response($responsevalues,500);
 
 
     }

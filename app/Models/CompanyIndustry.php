@@ -9,4 +9,7 @@ class CompanyIndustry extends Model
 
     protected $fillable = ['industryname'];
 
+    protected $connection = 'onboarding_connection';
+
+
 }
