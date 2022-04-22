@@ -42,6 +42,10 @@ spec:
               value: "base64:K76o6mAF+j3tQ/QnB+FxsughYqtys8k+yE75nLilmlM="
             - name: APP_DEBUG
               value: "true"
+              - name: FLAIR_SECURE_BASE_URL
+              value: "https://secure.myflair.africa"
+            - name: FLAIR_APP_BASE_URL
+              value: "https://app.myflair.africa"
             - name: LOG_CHANNEL
               value: "stderr"
             - name: SESSION_DRIVER
@@ -49,9 +53,35 @@ spec:
             - name: SESSION_LIFETIME
               value: "120"
             - name: AWS_BUCKET
-              value: "120"
+              value: "{{ .Values.storage.awsBucket }}"
+            - name: AWS_USE_PATH_STYLE_ENDPOINT
+              value: "false"
             - name: AWS_DEFAULT_REGION
               value: "eu-west-1"
+            - name: NSSAPI_BASE_URL
+              value: "https://switch.nss.gov.gh/api" 
+            - name: MAIL_MAILER
+              value: "smtp"
+            - name: MAIL_HOST
+              value: "email-smtp.us-east-2.amazonaws.com"
+            - name: MAIL_PORT
+              value: "587"
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: mail-username
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: mail-password
+            - name: MAIL_ENCRYPTION
+              value: "tls"
+            - name: MAIL_FROM_ADDRESS
+              value: "info@myflair.africa"
+            - name: MAIL_FROM_NAME
+              value: "Flair"
             - name: DB_CONNECTION
               value: "mysql" 
             - name: DB_HOST
