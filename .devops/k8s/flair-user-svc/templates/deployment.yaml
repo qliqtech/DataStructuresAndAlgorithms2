@@ -106,6 +106,103 @@ spec:
                 secretKeyRef:
                   name: flair-user-svc-user-secrets
                   key: db-password
+
+
+
+            - name: DB_HOST_ONBOARDING
+              valueFrom:
+                secretKeyRef:
+                  name: flair-onboarding-svc-user-secrets
+                  key: db-host
+            - name: DB_PORT_ONBOARDING
+              value: "3306"
+            - name: DB_DATABASE_ONBOARDING
+              valueFrom:
+                secretKeyRef:
+                  name: flair-onboarding-svc-user-secrets
+                  key: db-database
+            - name: DB_USERNAME_ONBOARDING
+              valueFrom:
+                secretKeyRef:
+                  name: flair-onboarding-svc-user-secrets
+                  key: db-username
+            - name: DB_PASSWORD_ONBOARDING
+              valueFrom:
+                secretKeyRef:
+                  name: flair-onboarding-svc-user-secrets
+                  key: db-password
+
+
+            - name: DB_HOST_POSTINGS_AND_REQUESTS
+              valueFrom:
+                secretKeyRef:
+                  name: flair-postings-svc-user-secrets
+                  key: db-host
+            - name: DB_PORT_POSTINGS_AND_REQUESTS
+              value: "3306"
+            - name: DB_DATABASE_POSTINGS_AND_REQUESTS
+              valueFrom:
+                secretKeyRef:
+                  name: flair-postings-svc-user-secrets
+                  key: db-database
+            - name: DB_USERNAME_POSTINGS_AND_REQUESTS
+              valueFrom:
+                secretKeyRef:
+                  name: flair-postings-svc-user-secrets
+                  key: db-username
+            - name: DB_PASSWORD_POSTINGS_AND_REQUESTS
+              valueFrom:
+                secretKeyRef:
+                  name: flair-postings-svc-user-secrets
+                  key: db-password
+
+            - name: DB_HOST_USER_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-host
+            - name: DB_PORT_USER_MANAGEMENT
+              value: "3306"
+            - name: DB_DATABASE_USER_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-database
+            - name: DB_USERNAME_USER_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-username
+            - name: DB_PASSWORD_USER_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-user-svc-user-secrets
+                  key: db-password
+
+
+            - name: DB_HOST_PROFILE_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-profile-svc-user-secrets
+                  key: db-host
+            - name: DB_PORT_PROFILE_MANAGEMENT
+              value: "3306"
+            - name: DB_DATABASE_PROFILE_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-profile-svc-user-secrets
+                  key: db-database
+            - name: DB_USERNAME_PROFILE_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-profile-svc-user-secrets
+                  key: db-username
+            - name: DB_PASSWORD_PROFILE_MANAGEMENT
+              valueFrom:
+                secretKeyRef:
+                  name: flair-profile-svc-user-secrets
+                  key: db-password
+
           ports:
             - name: http
               containerPort: 80
