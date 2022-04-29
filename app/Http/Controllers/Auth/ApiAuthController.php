@@ -176,7 +176,9 @@ class ApiAuthController extends Controller
 
         $service = new AuthenticationService();
 
-        $response = $service->userinfo($request->user->id);
+     //   dd($request->selecteduserid);
+
+        $response = $service->userinfo($request->selecteduserid);
 
         return $response;
     }

@@ -1215,7 +1215,7 @@ class AuthenticationService extends BaseImplemetationService
         $companyservice = new CompanyService();
 
 
-        $userdetais = DB::connection('onboarding_connection')->table('users')->select(['id','fullname','email','userroleid','onboardingcompanystate','useraccountstatus','front_portrait_url','employerid'])->find($userid);
+        $userdetais = DB::connection('onboarding_connection')->table('users')->select(['id','fullname','email','userroleid','onboardingcompanystate','useraccountstatus','front_portrait_url','employerid','nssnumber','created_by','created_at','phonenumber','id'])->find($userid);
 
        // dd($userdetais);
 
