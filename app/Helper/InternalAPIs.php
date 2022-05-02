@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use Illuminate\Support\Facades\Redis;
+
 class InternalAPIs
 {
 
@@ -26,6 +28,28 @@ class InternalAPIs
 
 
     public  function getuserdetails($token){
+
+
+        $response =   Redis::get('authtoken_' . $token);
+
+
+        if($response == null){
+
+
+            return null;
+            //   echo "Error: ". $response; die();
+
+        }
+
+
+
+
+        return  json_decode($response,true);
+    }
+
+
+
+    public  function getuserdetails_old($token){
 
         $baseurl = env('ONBOARDING_BASE_URL');
 
