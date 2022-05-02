@@ -43,7 +43,7 @@ spec:
             - name: APP_DEBUG
               value: "true"
             - name: REDIS_HOST
-              value: "dev.redis-master.svc.cluster.local"
+              value: "redis-master.dev.svc.cluster.local"
             - name: FLAIR_SECURE_BASE_URL
               value: "https://secure.myflair.africa"
             - name: FLAIR_APP_BASE_URL
