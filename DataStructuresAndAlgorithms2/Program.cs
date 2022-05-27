@@ -11,12 +11,16 @@ namespace DataStructuresAndAlgorithms2
         static void Main(string[] args)
         {
 
-            Recursion recursion = new Recursion();
+            SumofNumbers factotial = new SumofNumbers();
 
-            recursion.calculaterecursive(4);
+
+
+            Console.WriteLine("sum: " + factotial.sumniteration1(5));
 
             Console.ReadLine();
 
         }
+
+
     }
 }
