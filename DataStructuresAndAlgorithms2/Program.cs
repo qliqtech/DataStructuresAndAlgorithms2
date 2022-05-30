@@ -11,11 +11,13 @@ namespace DataStructuresAndAlgorithms2
         static void Main(string[] args)
         {
 
-            SumofNumbers factotial = new SumofNumbers();
+            Search search = new Search();
+
+            int[] myNum = { 10, 20, 40, 50 };
 
 
 
-            Console.WriteLine("sum: " + factotial.sumniteration1(5));
+            Console.WriteLine("result: " + search.binarysearch(4, myNum, 40));
 
             Console.ReadLine();
 
