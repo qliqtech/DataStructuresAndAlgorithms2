@@ -22,17 +22,17 @@ namespace DataStructuresAndAlgorithms2
                     if (A[j] < A[position])
                         position = j;
                 }
-                   
-                
+
+
                 int temp = A[i];
-                
+
                 A[i] = A[position];
-               
+
                 A[position] = temp;
-            
+
             }
 
-        
+
         }
 
 
@@ -41,7 +41,7 @@ namespace DataStructuresAndAlgorithms2
             for (int i = 0; i < n; i++)
                 Console.WriteLine(A[i] + " ");
             Console.WriteLine();
-        
+
         }
 
 
@@ -49,21 +49,59 @@ namespace DataStructuresAndAlgorithms2
         //get position of lowest item and swap
 
 
+        //code for insertsort
+        public int[] insertionsort(int[] A, int n) {
 
-        public void selectionsort2(int[] A, int n) {
+            for (int i = 0; i < n; i++)
+            {
 
-            for (int i = 0; i < n - 1; i++) {
-
+                int temp = A[i];
                 int position = i;
 
-                for (int j = i + 1; j < n; j++)
-                    if (A[j] < A[position])
-                        j = position;
+                while (position > 0 && A[position - 1] > temp)
+                {
+                    A[position] = A[position - 1];
+                    position--;
+                }
+                A[position] = temp;
+            }
 
 
-            }    
-        
+            return A;
         }
 
+
+        public void bubblesort(int[] A, int n) {
+
+            //for number of passes around
+            for (int pass = n - 1; pass >= 0; pass--) {
+
+                for (int i = 0; i < n - 1; i++) {
+
+                    if (A[i] > A[i + 1])
+                    {
+
+                        int temp = A[i];
+                        A[i] = A[i + 1];
+                        A[i + 1] = temp;
+                    }
+
+                   
+
+                }
+            
+            }
+            
+        
+        }
+        
+
     }
+
+  
+
+   
+
+
+     
 }

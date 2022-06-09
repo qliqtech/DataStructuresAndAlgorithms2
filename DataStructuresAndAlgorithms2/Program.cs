@@ -11,18 +11,25 @@ namespace DataStructuresAndAlgorithms2
         static void Main(string[] args)
         {
 
-            Search search = new Search();
+            Sorting s = new Sorting();
 
-            int[] myNum = { 10, 20, 40, 50 };
+            int[] A = { 3, 5, 8, 9, 6, 2 };
+
+            Console.WriteLine("Origional Array:");
+            s.display(A, 6);
+            s.bubblesort(A, 6);
+            Console.WriteLine("Sorted Array: ");
+            s.display(A, 6);
+            Console.ReadKey();
+
+           
 
 
 
-            Console.WriteLine("result: " + search.binarysearch(4, myNum, 40));
 
             Console.ReadLine();
 
         }
-
-
+      
     }
 }
