@@ -12,13 +12,16 @@ namespace DataStructuresAndAlgorithms2
         //int get position of lowest number in array
         //swap position
 
-        public void selectionsort(int[] A, int n) {
+        public void selectionsort(int[] A, int n)
+        {
 
-            for (int i = 0; i < n - 1; i++) {
+            for (int i = 0; i < n - 1; i++)
+            {
 
                 int position = i;
 
-                for (int j = i + 1; j < n; j++) {
+                for (int j = i + 1; j < n; j++)
+                {
                     if (A[j] < A[position])
                         position = j;
                 }
@@ -36,7 +39,8 @@ namespace DataStructuresAndAlgorithms2
         }
 
 
-        public void display(int[] A, int n) {
+        public void display(int[] A, int n)
+        {
 
             for (int i = 0; i < n; i++)
                 Console.WriteLine(A[i] + " ");
@@ -50,7 +54,8 @@ namespace DataStructuresAndAlgorithms2
 
 
         //code for insertsort
-        public int[] insertionsort(int[] A, int n) {
+        public int[] insertionsort(int[] A, int n)
+        {
 
             for (int i = 0; i < n; i++)
             {
@@ -71,12 +76,15 @@ namespace DataStructuresAndAlgorithms2
         }
 
 
-        public void bubblesort(int[] A, int n) {
+        public void bubblesort(int[] A, int n)
+        {
 
             //for number of passes around
-            for (int pass = n - 1; pass >= 0; pass--) {
+            for (int pass = n - 1; pass >= 0; pass--)
+            {
 
-                for (int i = 0; i < n - 1; i++) {
+                for (int i = 0; i < n - 1; i++)
+                {
 
                     if (A[i] > A[i + 1])
                     {
@@ -86,22 +94,47 @@ namespace DataStructuresAndAlgorithms2
                         A[i + 1] = temp;
                     }
 
-                   
+
 
                 }
-            
+
             }
-            
-        
+
+
         }
-        
+
+
+        public void shellsort(int[] A, int n)
+        {
+
+            int gap = n / 2;
+
+            while (gap > 0)
+            {
+                int i = gap;
+                while (i < n)
+                {
+
+                    int temp = A[i];
+                    int j = i - gap;
+                    while (j >= 0 && A[j] > temp)
+                    {
+                        A[j + gap] = A[j];
+                        j = j - gap;
+                    }
+
+                    A[j + gap] = temp;
+                    i = i + 1;
+
+                   
+                }
+                gap = gap / 2;
+
+
+            }
+
+        }
 
     }
-
-  
-
-   
-
-
      
 }

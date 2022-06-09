@@ -17,7 +17,8 @@ namespace DataStructuresAndAlgorithms2
 
             Console.WriteLine("Origional Array:");
             s.display(A, 6);
-            s.bubblesort(A, 6);
+         
+            s.shellsort(A, 6);
             Console.WriteLine("Sorted Array: ");
             s.display(A, 6);
             Console.ReadKey();
@@ -25,9 +26,6 @@ namespace DataStructuresAndAlgorithms2
            
 
 
-
-
-            Console.ReadLine();
 
         }
       
